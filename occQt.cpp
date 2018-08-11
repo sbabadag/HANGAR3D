@@ -162,10 +162,7 @@ void occQt::createToolBars( void )
 
 void occQt::about()
 {
-    QMessageBox::about(this, tr("About occQt"),
-        tr("<h2>occQt 2.0</h2>"
-        "<p>Copyright &copy; 2014 eryar@163.com"
-        "<p>occQt is a demo applicaton about Qt and OpenCASCADE."));
+    DisplayMyObjects();
 }
 
 void occQt::makeBox()
@@ -178,7 +175,7 @@ void occQt::makeBox()
     myOccView->getContext()->Display(anAisBox, Standard_True);
 }
 
-void DisplayMyObjects()
+void occQt::DisplayMyObjects()
 {
     std::vector<TopoDS_Shape> Objects;
     AIS_Shape *AIS;
@@ -211,8 +208,10 @@ void DisplayMyObjects()
           AIS->SetMaterial(Graphic3d_NOM_STEEL);
        //   AIS->SetColor(Quantity_Color(Quantity_NOC_BEIGE));
           AIS->SetDisplayMode(AIS_Shaded);
-          mContext->Display(AIS,Standard_False);
+          myOccView->getContext()->Display(AIS, Standard_True);
       }
+
+DisplayGrid(gp_Pln(gp_Ax3(gp_Pnt(0,0,0),gp_Dir(0,0,1))),0,0,10,10,1,0,5,5,1000);
 
 }
 
@@ -600,8 +599,19 @@ void occQt::makeCylindricalHelix()
         Handle(AIS_Shape) anAisPipe = new AIS_Shape(aPipeTransform.Shape());
         anAisPipe->SetColor(Quantity_NOC_CORAL);
         myOccView->getContext()->Display(anAisPipe, Standard_True);
+
     }
 }
+
+void occQt::DisplayGrid(gp_Pln aPlane, Quantity_Length XOrigin, Quantity_Length YOrigin, Quantity_Length XStep, Quantity_Length YStep, int Type, Quantity_Length Rotation, Quantity_Length XSize, Quantity_Length YSize, Quantity_Length Offset)
+{
+gp_Ax3 Ax3(aPlane.Location(), aPlane.Axis().Direction());
+myOccView->getContext()->CurrentViewer()->SetPrivilegedPlane(Ax3);
+myOccView->getContext()->CurrentViewer()->SetRectangularGridValues(XOrigin, YOrigin, XStep, YStep, Rotation);
+myOccView->getContext()->CurrentViewer()->SetRectangularGridGraphicValues(XSize, YSize, Offset);
+myOccView->getContext()->CurrentViewer()->ActivateGrid(Aspect_GT_Rectangular, Aspect_GDM_Lines);
+}
+
 
 /**
  * make conical helix, it is the same as the cylindrical helix,

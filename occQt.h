@@ -15,6 +15,9 @@
 #include "ui_occQt.h"
 
 #include <AIS_InteractiveContext.hxx>
+#include <Quantity_Length.hxx>
+
+
 
 class OccView;
 
@@ -94,6 +97,8 @@ private slots:
 
     //! test helix shapes.
     void testHelix(void);
+
+    void DisplayGrid(gp_Pln aPlane, Quantity_Length XOrigin, Quantity_Length YOrigin, Quantity_Length XStep, Quantity_Length YStep, int Type, Quantity_Length Rotation, Quantity_Length XSize, Quantity_Length YSize, Quantity_Length Offset);
 
 private:
     Ui::occQtClass ui;
