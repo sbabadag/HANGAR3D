@@ -211,7 +211,41 @@ void occQt::DisplayMyObjects()
           myOccView->getContext()->Display(AIS, Standard_True);
       }
 
-DisplayGrid(gp_Pln(gp_Ax3(gp_Pnt(0,0,0),gp_Dir(0,0,1))),0,0,10,10,1,0,5,5,1000);
+      gp_Pnt pnt( 0,0,0 ); // Use your coordinates here!
+      TopoDS_Vertex V1 = BRepBuilderAPI_MakeVertex( pnt );
+      //
+      gp_Pnt pnt1( 0, 0, 1000 ); // Use your coordinates here!
+      TopoDS_Vertex V2 = BRepBuilderAPI_MakeVertex( pnt1 );
+      //
+      gp_Pnt pnt2(1000, 0, 1500 ); // Use your coordinates here!
+      TopoDS_Vertex V3 = BRepBuilderAPI_MakeVertex( pnt2 );
+      //
+      gp_Pnt pnt3(2000, 0, 1000 ); // Use your coordinates here!
+      TopoDS_Vertex V4 = BRepBuilderAPI_MakeVertex( pnt3 );
+      //
+      gp_Pnt pnt4(2000, 1000, 1000) ; // Use your coordinates here!
+      TopoDS_Vertex V5 = BRepBuilderAPI_MakeVertex( pnt4 );
+
+      // Create the AIS_Shape
+      Handle(AIS_Shape) aShape = new AIS_Shape(V1);
+      Handle(AIS_Shape) aShape1 = new AIS_Shape(V2);
+      Handle(AIS_Shape) aShape2 = new AIS_Shape(V3);
+      Handle(AIS_Shape) aShape3 = new AIS_Shape(V4);
+      Handle(AIS_Shape) aShape4 = new AIS_Shape(V5);
+
+
+      // Set the vertex shape, color, and size
+      Quantity_Color color(Quantity_NOC_RED);
+      Handle_Prs3d_PointAspect myPointAspect=new Prs3d_PointAspect(Aspect_TOM_O,color,2);
+      aShape->Attributes()->SetPointAspect(myPointAspect);
+      myOccView->getContext()->Display(aShape, Standard_True);
+      myOccView->getContext()->Display(aShape1, Standard_True);
+      myOccView->getContext()->Display(aShape2, Standard_True);
+      myOccView->getContext()->Display(aShape3, Standard_True);
+      myOccView->getContext()->Display(aShape4, Standard_True);
+
+
+
 
 }
 

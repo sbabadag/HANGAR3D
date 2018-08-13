@@ -582,17 +582,28 @@ TopoDS_Shape MyExtrudeProfile(double h, double b, double tf, double tw, gp_Pnt s
     //
      BRepOffsetAPI_MakePipeShell S(myPathWire);
 
-     gp_Trsf T;
-     T.SetTranslation(gp_Pnt(0, 0, 0), sPt);
-    // T.SetRotation(gp_Ax1(sPt, gp_Dir(ePt.X(), ePt.Y(), ePt.Z())),3.14/4);
-     BRepBuilderAPI_Transform xform1(myWireProfile, T);
+     GProp_GProps massProps;
+     BRepGProp::SurfaceProperties(myWireProfile, massProps);
+     gp_Pnt gPt = massProps.CentreOfMass();
 
-    S.Add(xform1,true,true);
+     gp_Trsf T,T1;
+     T.SetTranslation(gp_Pnt(0, 0, 0),gPt);
+     myWireProfile.Move(T);
+  //   BRepBuilderAPI_Transform xform1(myWireProfile, T);
+
+     T1.SetTranslation(gPt,sPt);
+     myWireProfile.Move(T1);
+
+    // T.SetRotation(gp_Ax1(sPt, gp_Dir(ePt.X(), ePt.Y(), ePt.Z())),3.14/4);
+ //    BRepBuilderAPI_Transform xform2(xform1, T1);
+
+    S.Add(myWireProfile,false,true);
     S.Build();
     S.MakeSolid();
      //
 
-     return S;
+
+     return myWireProfile;
 }
 
 
@@ -673,93 +684,6 @@ TopoDS_Shape Extrude_profile(double a , double b, gp_Pnt sPt,gp_Pnt ePt)
     direction.SetZ(ePt.Z());
 
     return BRepPrimAPI_MakePrism(face, direction);
-
-}
-
-TopoDS_Shape DrawGrid()
-{
-    gp_Pnt pt1(0,0,0);
-    gp_Pnt pt2(0,12000,0);
-    gp_Pnt pt3(5000,0,0);
-    gp_Pnt pt4(5000,12000,0);
-    gp_Pnt pt5(10000,0,0);
-    gp_Pnt pt6(10000,12000,0);
-    //
-    gp_Pnt pt7(0,0,0);
-    gp_Pnt pt8(10000,0,0);
-    gp_Pnt pt9(0,6000,0);
-    gp_Pnt pt10(10000,6000,0);
-    gp_Pnt pt11(0,12000,0);
-    gp_Pnt pt12(10000,12000,0);
-    //
-    TopoDS_Vertex vertex1 = BRepBuilderAPI_MakeVertex(pt1);
-    TopoDS_Vertex vertex2 = BRepBuilderAPI_MakeVertex(pt2);
-    TopoDS_Vertex vertex3 = BRepBuilderAPI_MakeVertex(pt3);
-    TopoDS_Vertex vertex4 = BRepBuilderAPI_MakeVertex(pt4);
-    TopoDS_Vertex vertex5 = BRepBuilderAPI_MakeVertex(pt5);
-    TopoDS_Vertex vertex6 = BRepBuilderAPI_MakeVertex(pt6);
-    TopoDS_Vertex vertex7 = BRepBuilderAPI_MakeVertex(pt7);
-    TopoDS_Vertex vertex8 = BRepBuilderAPI_MakeVertex(pt8);
-    TopoDS_Vertex vertex9 = BRepBuilderAPI_MakeVertex(pt9);
-    TopoDS_Vertex vertex10 = BRepBuilderAPI_MakeVertex(pt10);
-    TopoDS_Vertex vertex11 = BRepBuilderAPI_MakeVertex(pt11);
-    TopoDS_Vertex vertex12 = BRepBuilderAPI_MakeVertex(pt12);
-    //
-    TopoDS_Edge edge1 = BRepBuilderAPI_MakeEdge(pt1,pt2);
-    TopoDS_Edge edge2 = BRepBuilderAPI_MakeEdge(pt3,pt4);
-    TopoDS_Edge edge3 = BRepBuilderAPI_MakeEdge(pt5,pt6);
-    TopoDS_Edge edge4 = BRepBuilderAPI_MakeEdge(pt7,pt8);
-    TopoDS_Edge edge5 = BRepBuilderAPI_MakeEdge(pt9,pt10);
-    TopoDS_Edge edge6 = BRepBuilderAPI_MakeEdge(pt11,pt12);
-
-    Handle(AIS_Shape) aisBody1 = new AIS_Shape(edge1);
-    Handle(AIS_Shape) aisBody2 = new AIS_Shape(edge2);
-    Handle(AIS_Shape) aisBody3 = new AIS_Shape(edge3);
-    Handle(AIS_Shape) aisBody4 = new AIS_Shape(edge4);
-    Handle(AIS_Shape) aisBody5 = new AIS_Shape(edge5);
-    Handle(AIS_Shape) aisBody6 = new AIS_Shape(edge6);
-
-
-
-
-
-    //
-    Handle(Geom_TrimmedCurve) aSegment1 = GC_MakeSegment(pt1, pt2);
-    Handle(Geom_TrimmedCurve) aSegment2 = GC_MakeSegment(pt3, pt4);
-    Handle(Geom_TrimmedCurve) aSegment3 = GC_MakeSegment(pt5, pt6);
-    Handle(Geom_TrimmedCurve) aSegment4 = GC_MakeSegment(pt7, pt8);
-    Handle(Geom_TrimmedCurve) aSegment5 = GC_MakeSegment(pt9, pt10);
-    Handle(Geom_TrimmedCurve) aSegment6 = GC_MakeSegment(pt11, pt12);
-    //
-    TopoDS_Edge anEdge1 = BRepBuilderAPI_MakeEdge(aSegment1);
-    TopoDS_Edge anEdge2 = BRepBuilderAPI_MakeEdge(aSegment2);
-    TopoDS_Edge anEdge3 = BRepBuilderAPI_MakeEdge(aSegment3);
-    TopoDS_Edge anEdge4 = BRepBuilderAPI_MakeEdge(aSegment4);
-    TopoDS_Edge anEdge5 = BRepBuilderAPI_MakeEdge(aSegment5);
-    TopoDS_Edge anEdge6 = BRepBuilderAPI_MakeEdge(aSegment6);
-    //
-    TopoDS_Wire threadingWire1 = BRepBuilderAPI_MakeWire(anEdge1, anEdge1);
-    TopoDS_Wire threadingWire2 = BRepBuilderAPI_MakeWire(anEdge2, anEdge2);
-    TopoDS_Wire threadingWire3 = BRepBuilderAPI_MakeWire(anEdge3, anEdge3);
-    TopoDS_Wire threadingWire4 = BRepBuilderAPI_MakeWire(anEdge4, anEdge4);
-    TopoDS_Wire threadingWire5 = BRepBuilderAPI_MakeWire(anEdge5, anEdge5);
-    TopoDS_Wire threadingWire6 = BRepBuilderAPI_MakeWire(anEdge6, anEdge6);
-
-    //
-    BRepBuilderAPI_MakeWire mkWire;
-
-    mkWire.Add(threadingWire1);
-    mkWire.Add(threadingWire2);
-    mkWire.Add(threadingWire3);
-    mkWire.Add(threadingWire4);
-    mkWire.Add(threadingWire5);
-    mkWire.Add(threadingWire6);
-
-    TopoDS_Shape S(mkWire.Shape());
-
-    return S;
-
-
 
 }
 
