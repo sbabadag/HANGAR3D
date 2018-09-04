@@ -263,6 +263,7 @@
  #include <TColStd_Array1OfInteger.hxx>
  #include <Geom_BSplineCurve.hxx>
  #include <BRepBuilderAPI_MakePolygon.hxx>
+#include <math.hxx>
 
 Handle(Aspect_DisplayConnection) aDisplayConnection;
 Handle(OpenGl_GraphicDriver)     myGraphicDriver;
@@ -343,7 +344,7 @@ gp_Pnt PickPoint(Handle_V3d_View aView, TopoDS_Shape myShape, long x, long y)
     return resultPoint;
 }
 
-TopoDS_Shape Make_IPE_Profile(double h, double b, double tf, double tw, gp_Pnt sPt, gp_Pnt ePt)
+TopoDS_Shape Make_IPE_Profile(double h, double b, double tf, double tw, gp_Pnt sPt, gp_Pnt ePt,Standard_Real rot)
 {
     gp_Pnt pt0(-b / 2, -h / 2, 0);
     gp_Pnt pt1(-b / 2, -h / 2+tf, 0);
@@ -425,6 +426,10 @@ TopoDS_Shape Make_IPE_Profile(double h, double b, double tf, double tw, gp_Pnt s
     TopoDS_Wire myWireProfile = mkWire.Wire();
     TopoDS_Face myFaceProfile = BRepBuilderAPI_MakeFace(myWireProfile);
     double Length = sPt.Distance(ePt);
+
+    gp_Trsf T;
+    T.SetRotation(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,Length)),rot*0.0174532925);
+    myFaceProfile.Move(T);
     gp_Vec aPrismVec(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, Length));
     TopoDS_Shape IPE_Profile = BRepPrimAPI_MakePrism(myFaceProfile, aPrismVec);
     gp_Trsf Tr;

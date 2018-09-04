@@ -182,22 +182,22 @@ void occQt::DisplayMyObjects()
     AIS_Shape *AIS_1;
 
       //
-      TopoDS_Shape IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 0), gp_Pnt(0, 0, 1000));
+      TopoDS_Shape IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 0), gp_Pnt(0, 0, 1000),90);
       Objects.push_back(IPE100_a);
-       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 1000), gp_Pnt(1000, 0, 1500));
+       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 1000), gp_Pnt(1000, 0, 1500),90);
       Objects.push_back(IPE100_a);
-       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 0, 1500), gp_Pnt(2000, 0, 1000));
+       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 0, 1500), gp_Pnt(2000, 0, 1000),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 0, 1000), gp_Pnt(2000, 0, 0));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 0, 1000), gp_Pnt(2000, 0, 0),90);
       Objects.push_back(IPE100_a);
       //
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 0), gp_Pnt(0, 1000, 1000));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 0), gp_Pnt(0, 1000, 1000),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 1000), gp_Pnt(1000, 1000, 1500));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 1000), gp_Pnt(1000, 1000, 1500),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 1000, 1500), gp_Pnt(2000, 1000, 1000));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 1000, 1500), gp_Pnt(2000, 1000, 1000),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 1000, 1000), gp_Pnt(2000, 1000, 0));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 1000, 1000), gp_Pnt(2000, 1000, 0),90);
       Objects.push_back(IPE100_a);
 
 
@@ -248,6 +248,8 @@ void occQt::DisplayMyObjects()
       myOccView->getContext()->Display(aShape2, Standard_True);
       myOccView->getContext()->Display(aShape3, Standard_True);
       myOccView->getContext()->Display(aShape4, Standard_True);
+
+      DisplayGrid(gp_Pln(gp_Pnt(0,0,0),gp_Dir(0,0,1)),0,0,2,6,0,0,1000,2000,0);
 
 
 
