@@ -227,9 +227,17 @@ void OccView::onMButtonDown( const int /*theFlags*/, const QPoint thePoint )
     }
 }
 
-void OccView::onRButtonDown( const int /*theFlags*/, const QPoint /*thePoint*/ )
+void OccView::onRButtonDown( const int /*theFlags*/, const QPoint thePoint )
 {
+    myXmin = thePoint.x();
+    myYmin = thePoint.y();
+    myXmax = thePoint.x();
+    myYmax = thePoint.y();
 
+    if (thePoint.x() == myXmin && thePoint.y() == myYmin)
+    {
+        panByMiddleButton(thePoint);
+    }
 }
 
 void OccView::onMouseWheel( const int /*theFlags*/, const int theDelta, const QPoint thePoint )

@@ -182,22 +182,22 @@ void occQt::DisplayMyObjects()
     AIS_Shape *AIS_1;
 
       //
-      TopoDS_Shape IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(0, 0, 0), gp_Pnt(0, 0, 1000));
+      TopoDS_Shape IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 0), gp_Pnt(0, 0, 1000));
       Objects.push_back(IPE100_a);
-       IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(0, 0, 1000), gp_Pnt(1000, 0, 1500));
+       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 1000), gp_Pnt(1000, 0, 1500));
       Objects.push_back(IPE100_a);
-       IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(1000, 0, 1500), gp_Pnt(2000, 0, 1000));
+       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 0, 1500), gp_Pnt(2000, 0, 1000));
       Objects.push_back(IPE100_a);
-      IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(2000, 0, 1000), gp_Pnt(2000, 0, 0));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 0, 1000), gp_Pnt(2000, 0, 0));
       Objects.push_back(IPE100_a);
       //
-      IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(0, 1000, 0), gp_Pnt(0, 1000, 1000));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 0), gp_Pnt(0, 1000, 1000));
       Objects.push_back(IPE100_a);
-      IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(0, 1000, 1000), gp_Pnt(1000, 1000, 1500));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 1000), gp_Pnt(1000, 1000, 1500));
       Objects.push_back(IPE100_a);
-      IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(1000, 1000, 1500), gp_Pnt(2000, 1000, 1000));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 1000, 1500), gp_Pnt(2000, 1000, 1000));
       Objects.push_back(IPE100_a);
-      IPE100_a = MyExtrudeProfile(200, 100, 10, 10, gp_Pnt(2000, 1000, 1000), gp_Pnt(2000, 1000, 0));
+      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 1000, 1000), gp_Pnt(2000, 1000, 0));
       Objects.push_back(IPE100_a);
 
 
@@ -223,7 +223,7 @@ void occQt::DisplayMyObjects()
       gp_Pnt pnt3(2000, 0, 1000 ); // Use your coordinates here!
       TopoDS_Vertex V4 = BRepBuilderAPI_MakeVertex( pnt3 );
       //
-      gp_Pnt pnt4(2000, 1000, 1000) ; // Use your coordinates here!
+      gp_Pnt pnt4(2000, 0, 0) ; // Use your coordinates here!
       TopoDS_Vertex V5 = BRepBuilderAPI_MakeVertex( pnt4 );
 
       // Create the AIS_Shape
@@ -238,6 +238,11 @@ void occQt::DisplayMyObjects()
       Quantity_Color color(Quantity_NOC_RED);
       Handle_Prs3d_PointAspect myPointAspect=new Prs3d_PointAspect(Aspect_TOM_O,color,2);
       aShape->Attributes()->SetPointAspect(myPointAspect);
+      aShape1->Attributes()->SetPointAspect(myPointAspect);
+      aShape2->Attributes()->SetPointAspect(myPointAspect);
+      aShape3->Attributes()->SetPointAspect(myPointAspect);
+      aShape4->Attributes()->SetPointAspect(myPointAspect);
+
       myOccView->getContext()->Display(aShape, Standard_True);
       myOccView->getContext()->Display(aShape1, Standard_True);
       myOccView->getContext()->Display(aShape2, Standard_True);

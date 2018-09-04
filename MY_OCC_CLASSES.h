@@ -346,17 +346,17 @@ gp_Pnt PickPoint(Handle_V3d_View aView, TopoDS_Shape myShape, long x, long y)
 TopoDS_Shape Make_IPE_Profile(double h, double b, double tf, double tw, gp_Pnt sPt, gp_Pnt ePt)
 {
     gp_Pnt pt0(-b / 2, -h / 2, 0);
-    gp_Pnt pt1(b / 2, -h / 2, 0);
-    gp_Pnt pt2(b / 2, -h / 2 + tf, 0);
-    gp_Pnt pt3(tw / 2, -h / 2 + tf, 0);
-    gp_Pnt pt4(tw / 2, h / 2 - tf, 0);
-    gp_Pnt pt5(b / 2, h / 2 - tf, 0);
+    gp_Pnt pt1(-b / 2, -h / 2+tf, 0);
+    gp_Pnt pt2(-tw/2, -h / 2 + tf, 0);
+    gp_Pnt pt3(-tw / 2, h / 2 - tf, 0);
+    gp_Pnt pt4(-b / 2, h / 2 - tf, 0);
+    gp_Pnt pt5(-b / 2, h / 2 , 0);
     gp_Pnt pt6(b / 2, h / 2, 0);
-    gp_Pnt pt7(-b / 2, h / 2, 0);
-    gp_Pnt pt8(-b / 2, h / 2 - tf, 0);
-    gp_Pnt pt9(-tw / 2, h / 2 - tf, 0);
-    gp_Pnt pt10(-tw / 2, -h / 2 + tf, 0);
-    gp_Pnt pt11(-b / 2, -h / 2 + tf, 0);
+    gp_Pnt pt7(b / 2, h / 2-tf, 0);
+    gp_Pnt pt8(tw / 2, h / 2 - tf, 0);
+    gp_Pnt pt9(tw / 2, -h / 2 + tf, 0);
+    gp_Pnt pt10(b / 2, -h / 2 + tf, 0);
+    gp_Pnt pt11(b / 2, -h / 2 , 0);
     //
 
 
@@ -428,13 +428,8 @@ TopoDS_Shape Make_IPE_Profile(double h, double b, double tf, double tw, gp_Pnt s
     gp_Vec aPrismVec(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, Length));
     TopoDS_Shape IPE_Profile = BRepPrimAPI_MakePrism(myFaceProfile, aPrismVec);
     gp_Trsf Tr;
-    gp_Ax3 oldAxis(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1));
-    gp_Ax3 newAxis(sPt, gp_Dir(ePt.X(),ePt.Y(),ePt.Z()));
-
-
-
-
-
+    gp_Ax3 oldAxis(gp_Pnt(0, 0, 0), gp_Dir(gp_Vec(gp_Pnt(0,0,0),gp_Pnt(0,0,1))));
+    gp_Ax3 newAxis(sPt, gp_Dir(gp_Vec(sPt,ePt)));
 
     Tr.SetDisplacement(oldAxis, newAxis);
 
@@ -586,24 +581,19 @@ TopoDS_Shape MyExtrudeProfile(double h, double b, double tf, double tw, gp_Pnt s
      BRepGProp::SurfaceProperties(myWireProfile, massProps);
      gp_Pnt gPt = massProps.CentreOfMass();
 
-     gp_Trsf T,T1;
-     T.SetTranslation(gp_Pnt(0, 0, 0),gPt);
-     myWireProfile.Move(T);
-  //   BRepBuilderAPI_Transform xform1(myWireProfile, T);
+     gp_Trsf T;
 
-     T1.SetTranslation(gPt,sPt);
-     myWireProfile.Move(T1);
 
-    // T.SetRotation(gp_Ax1(sPt, gp_Dir(ePt.X(), ePt.Y(), ePt.Z())),3.14/4);
- //    BRepBuilderAPI_Transform xform2(xform1, T1);
 
-    S.Add(myWireProfile,false,true);
+         T.SetTranslation(gp_Pnt(0, 0, 0),sPt);
+         myWireProfile.Move(T);
+
+    S.Add(myWireProfile,true,true);
     S.Build();
     S.MakeSolid();
-     //
 
 
-     return myWireProfile;
+     return S;
 }
 
 
