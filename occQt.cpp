@@ -177,34 +177,34 @@ void occQt::makeBox()
 
 void occQt::DisplayMyObjects()
 {
-    std::vector<TopoDS_Shape> Objects;
+    std::vector<TProfile*> Objects;
     AIS_Shape *AIS;
-    AIS_Shape *AIS_1;
 
       //
-      TopoDS_Shape IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 0), gp_Pnt(0, 0, 1000),90);
+      TProfile *IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(0, 0, 0), gp_Pnt(0, 0, 1000),90);
+
       Objects.push_back(IPE100_a);
-       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 0, 1000), gp_Pnt(1000, 0, 1500),90);
+       IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(0, 0, 1000), gp_Pnt(1000, 0, 1500),90);
       Objects.push_back(IPE100_a);
-       IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 0, 1500), gp_Pnt(2000, 0, 1000),90);
+       IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(1000, 0, 1500), gp_Pnt(2000, 0, 1000),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 0, 1000), gp_Pnt(2000, 0, 0),90);
+      IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(2000, 0, 1000), gp_Pnt(2000, 0, 0),90);
       Objects.push_back(IPE100_a);
       //
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 0), gp_Pnt(0, 1000, 1000),90);
+      IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(0, 1000, 0), gp_Pnt(0, 1000, 1000),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(0, 1000, 1000), gp_Pnt(1000, 1000, 1500),90);
+      IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(0, 1000, 1000), gp_Pnt(1000, 1000, 1500),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(1000, 1000, 1500), gp_Pnt(2000, 1000, 1000),90);
+      IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(1000, 1000, 1500), gp_Pnt(2000, 1000, 1000),90);
       Objects.push_back(IPE100_a);
-      IPE100_a = Make_IPE_Profile(200, 100, 10, 10, gp_Pnt(2000, 1000, 1000), gp_Pnt(2000, 1000, 0),90);
+      IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(2000, 1000, 1000), gp_Pnt(2000, 1000, 0),90);
       Objects.push_back(IPE100_a);
 
 
 
       for (int i = 0; i < Objects.size(); i++)
       {
-          AIS = new AIS_Shape(Objects[i]);
+          AIS = new AIS_Shape(Objects[i]->GetShape());
           AIS->SetMaterial(Graphic3d_NOM_STEEL);
        //   AIS->SetColor(Quantity_Color(Quantity_NOC_BEIGE));
           AIS->SetDisplayMode(AIS_Shaded);

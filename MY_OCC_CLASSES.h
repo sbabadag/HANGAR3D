@@ -265,21 +265,128 @@
  #include <BRepBuilderAPI_MakePolygon.hxx>
 #include <math.hxx>
 
-Handle(Aspect_DisplayConnection) aDisplayConnection;
-Handle(OpenGl_GraphicDriver)     myGraphicDriver;
-Handle_V3d_Viewer                mViewer;
-Handle_V3d_View                  mView;
-Handle_AIS_InteractiveContext    mContext;
-Standard_Integer  myXmin;
-Standard_Integer  myYmin;
-Standard_Integer  myXmax;
-Standard_Integer  myYmax;
-Standard_Integer  myWidth;
-Standard_Integer  myHeight;
-bool view_initialized;
-int scaleX;
-int scaleY;
-int scaleZ;
+static Handle(Aspect_DisplayConnection) aDisplayConnection;
+static Handle(OpenGl_GraphicDriver)     myGraphicDriver;
+static Handle_V3d_Viewer                mViewer;
+static Handle_V3d_View                  mView;
+static Handle_AIS_InteractiveContext    mContext;
+
+
+ class TProfile {
+
+protected:
+private:
+     gp_Pnt sPt,ePt;
+     double h,b,tf,tw,rot;
+     TopoDS_Shape Profile;
+
+public:
+     TProfile(double ah, double ab, double atf, double atw, gp_Pnt asPt, gp_Pnt aePt,Standard_Real arot);
+     ~TProfile();
+     TopoDS_Shape GetShape() {return Profile;}
+
+};
+
+  TProfile::TProfile(double ah, double ab, double atf, double atw, gp_Pnt asPt, gp_Pnt aePt,Standard_Real arot)
+ {
+     h = ah;
+     b = ab;
+     tf = atf;
+     tw = atw;
+     rot = arot;
+     sPt = asPt;
+     ePt = aePt;
+     //
+     gp_Pnt pt0(-b / 2, -h / 2, 0);
+     gp_Pnt pt1(-b / 2, -h / 2+tf, 0);
+     gp_Pnt pt2(-tw/2, -h / 2 + tf, 0);
+     gp_Pnt pt3(-tw / 2, h / 2 - tf, 0);
+     gp_Pnt pt4(-b / 2, h / 2 - tf, 0);
+     gp_Pnt pt5(-b / 2, h / 2 , 0);
+     gp_Pnt pt6(b / 2, h / 2, 0);
+     gp_Pnt pt7(b / 2, h / 2-tf, 0);
+     gp_Pnt pt8(tw / 2, h / 2 - tf, 0);
+     gp_Pnt pt9(tw / 2, -h / 2 + tf, 0);
+     gp_Pnt pt10(b / 2, -h / 2 + tf, 0);
+     gp_Pnt pt11(b / 2, -h / 2 , 0);
+     //
+     Handle(Geom_TrimmedCurve) aSegment1 = GC_MakeSegment(pt0, pt1);
+     Handle(Geom_TrimmedCurve) aSegment2 = GC_MakeSegment(pt1, pt2);
+     Handle(Geom_TrimmedCurve) aSegment3 = GC_MakeSegment(pt2, pt3);
+     Handle(Geom_TrimmedCurve) aSegment4 = GC_MakeSegment(pt3, pt4);
+     Handle(Geom_TrimmedCurve) aSegment5 = GC_MakeSegment(pt4, pt5);
+     Handle(Geom_TrimmedCurve) aSegment6 = GC_MakeSegment(pt5, pt6);
+     Handle(Geom_TrimmedCurve) aSegment7 = GC_MakeSegment(pt6, pt7);
+     Handle(Geom_TrimmedCurve) aSegment8 = GC_MakeSegment(pt7, pt8);
+     Handle(Geom_TrimmedCurve) aSegment9 = GC_MakeSegment(pt8, pt9);
+     Handle(Geom_TrimmedCurve) aSegment10 = GC_MakeSegment(pt9, pt10);
+     Handle(Geom_TrimmedCurve) aSegment11 = GC_MakeSegment(pt10, pt11);
+     Handle(Geom_TrimmedCurve) aSegment12 = GC_MakeSegment(pt11, pt0);
+     //
+     TopoDS_Edge anEdge1 = BRepBuilderAPI_MakeEdge(aSegment1);
+     TopoDS_Edge anEdge2 = BRepBuilderAPI_MakeEdge(aSegment2);
+     TopoDS_Edge anEdge3 = BRepBuilderAPI_MakeEdge(aSegment3);
+     TopoDS_Edge anEdge4 = BRepBuilderAPI_MakeEdge(aSegment4);
+     TopoDS_Edge anEdge5 = BRepBuilderAPI_MakeEdge(aSegment5);
+     TopoDS_Edge anEdge6 = BRepBuilderAPI_MakeEdge(aSegment6);
+     TopoDS_Edge anEdge7 = BRepBuilderAPI_MakeEdge(aSegment7);
+     TopoDS_Edge anEdge8 = BRepBuilderAPI_MakeEdge(aSegment8);
+     TopoDS_Edge anEdge9 = BRepBuilderAPI_MakeEdge(aSegment9);
+     TopoDS_Edge anEdge10 = BRepBuilderAPI_MakeEdge(aSegment10);
+     TopoDS_Edge anEdge11 = BRepBuilderAPI_MakeEdge(aSegment11);
+     TopoDS_Edge anEdge12 = BRepBuilderAPI_MakeEdge(aSegment12);
+     //
+     TopoDS_Wire threadingWire1 = BRepBuilderAPI_MakeWire(anEdge1, anEdge2);
+     TopoDS_Wire threadingWire2 = BRepBuilderAPI_MakeWire(anEdge2, anEdge3);
+     TopoDS_Wire threadingWire3 = BRepBuilderAPI_MakeWire(anEdge3, anEdge4);
+     TopoDS_Wire threadingWire4 = BRepBuilderAPI_MakeWire(anEdge4, anEdge5);
+     TopoDS_Wire threadingWire5 = BRepBuilderAPI_MakeWire(anEdge5, anEdge6);
+     TopoDS_Wire threadingWire6 = BRepBuilderAPI_MakeWire(anEdge6, anEdge7);
+     TopoDS_Wire threadingWire7 = BRepBuilderAPI_MakeWire(anEdge7, anEdge8);
+     TopoDS_Wire threadingWire8 = BRepBuilderAPI_MakeWire(anEdge8, anEdge9);
+     TopoDS_Wire threadingWire9 = BRepBuilderAPI_MakeWire(anEdge9, anEdge10);
+     TopoDS_Wire threadingWire10 = BRepBuilderAPI_MakeWire(anEdge10, anEdge11);
+     TopoDS_Wire threadingWire11 = BRepBuilderAPI_MakeWire(anEdge11, anEdge12);
+     TopoDS_Wire threadingWire12 = BRepBuilderAPI_MakeWire(anEdge12, anEdge1);
+     //
+
+     BRepBuilderAPI_MakeWire mkWire;
+     BRepBuilderAPI_MakeWire mkWire1;
+//
+     mkWire.Add(threadingWire1);
+     mkWire.Add(threadingWire2);
+     mkWire.Add(threadingWire3);
+     mkWire.Add(threadingWire4);
+     mkWire.Add(threadingWire5);
+     mkWire.Add(threadingWire6);
+     mkWire.Add(threadingWire7);
+     mkWire.Add(threadingWire8);
+     mkWire.Add(threadingWire9);
+     mkWire.Add(threadingWire10);
+     mkWire.Add(threadingWire11);
+     mkWire.Add(threadingWire12);
+     //
+     TopoDS_Wire myWireProfile = mkWire.Wire();
+     TopoDS_Face myFaceProfile = BRepBuilderAPI_MakeFace(myWireProfile);
+     double Length = sPt.Distance(ePt);
+
+     gp_Trsf T;
+     T.SetRotation(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,Length)),rot*0.0174532925);
+     myFaceProfile.Move(T);
+     gp_Vec aPrismVec(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, Length));
+     TopoDS_Shape IPE_Profile = BRepPrimAPI_MakePrism(myFaceProfile, aPrismVec);
+     gp_Trsf Tr;
+     gp_Ax3 oldAxis(gp_Pnt(0, 0, 0), gp_Dir(gp_Vec(gp_Pnt(0,0,0),gp_Pnt(0,0,1))));
+     gp_Ax3 newAxis(sPt, gp_Dir(gp_Vec(sPt,ePt)));
+
+     Tr.SetDisplacement(oldAxis, newAxis);
+
+     BRepBuilderAPI_Transform xform1(IPE_Profile, Tr);
+
+
+     Profile = xform1.Shape();
+
+ }
 
 
 gp_Pnt PickPoint(Handle_V3d_View aView, TopoDS_Shape myShape, long x, long y)
