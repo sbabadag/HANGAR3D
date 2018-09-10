@@ -182,6 +182,7 @@ void occQt::DisplayMyObjects()
 
       //
       TProfile *IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(0, 0, 0), gp_Pnt(0, 0, 1000),90);
+      IPE100_a->CutShape(gp_Pln(gp_Pnt(0,0,500),gp_Dir(0,0,1000)));
 
       Objects.push_back(IPE100_a);
        IPE100_a = new TProfile(200, 100, 10, 10, gp_Pnt(0, 0, 1000), gp_Pnt(1000, 0, 1500),90);
@@ -210,6 +211,10 @@ void occQt::DisplayMyObjects()
           AIS->SetDisplayMode(AIS_Shaded);
           myOccView->getContext()->Display(AIS, Standard_True);
       }
+
+      // cut sample
+
+      //
 
       gp_Pnt pnt( 0,0,0 ); // Use your coordinates here!
       TopoDS_Vertex V1 = BRepBuilderAPI_MakeVertex( pnt );

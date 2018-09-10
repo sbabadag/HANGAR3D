@@ -284,6 +284,7 @@ public:
      TProfile(double ah, double ab, double atf, double atw, gp_Pnt asPt, gp_Pnt aePt,Standard_Real arot);
      ~TProfile();
      TopoDS_Shape GetShape() {return Profile;}
+     void CutShape(const gp_Pln &P1);
 
 };
 
@@ -387,6 +388,16 @@ public:
      Profile = xform1.Shape();
 
  }
+
+  void TProfile::CutShape(const gp_Pln &P1)
+   {
+      TopoDS_Shape aFace = BRepBuilderAPI_MakeFace(P1);
+
+          BRepAlgoAPI_Cut aProfile(Profile,aFace);
+         aProfile.Build();
+         Profile = aProfile.Shape();
+
+   };
 
 
 gp_Pnt PickPoint(Handle_V3d_View aView, TopoDS_Shape myShape, long x, long y)
